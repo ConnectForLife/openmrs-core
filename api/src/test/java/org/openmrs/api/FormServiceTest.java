@@ -29,8 +29,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.collections.ListUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Field;
@@ -45,6 +47,7 @@ import org.openmrs.obs.SerializableComplexObsHandler;
 import org.openmrs.test.BaseContextSensitiveTest;
 import org.openmrs.util.DateUtil;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * TODO clean up and finish this test for all methods in FormService
@@ -60,6 +63,14 @@ public class FormServiceTest extends BaseContextSensitiveTest {
 	protected static final String MULTIPLE_FORMS_FORM_FIELDS_XML = "org/openmrs/api/include/FormServiceTest-multipleForms-formFields.xml";
 	
 	protected static final String FORM_SAMPLE_RESOURCE = "org/openmrs/api/include/FormServiceTest-sampleResource.xslt";
+
+	@Autowired
+	private CacheManager cacheManager;
+
+	@Before
+	public void runBeforeEachTest() {
+		cacheManager.clearAll();
+	}
 	
 	/**
 	 * Creates then updates a form FIXME Break this test case into separate tests

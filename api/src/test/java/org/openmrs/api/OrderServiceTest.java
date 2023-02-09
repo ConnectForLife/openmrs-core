@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.GregorianCalendar;
 
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -80,6 +81,7 @@ import org.openmrs.test.TestUtil;
 import org.openmrs.util.DateUtil;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * TODO clean up and test all methods in OrderService
@@ -105,6 +107,9 @@ public class OrderServiceTest extends BaseContextSensitiveTest {
 	private OrderSetService orderSetService;
 	
 	private MessageSourceService mss;
+
+	@Autowired
+	private CacheManager cacheManager;
 	
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
@@ -113,6 +118,8 @@ public class OrderServiceTest extends BaseContextSensitiveTest {
 	
 	@Before
 	public void setup() {
+		cacheManager.clearAll();
+		
 		if (orderService == null) {
 			orderService = Context.getOrderService();
 		}

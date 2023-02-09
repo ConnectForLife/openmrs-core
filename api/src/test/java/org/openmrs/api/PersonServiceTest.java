@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +54,7 @@ import org.openmrs.person.PersonMergeLogData;
 import org.openmrs.test.BaseContextSensitiveTest;
 import org.openmrs.test.TestUtil;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class tests methods in the PersonService class. TODO: Test all methods in the PersonService
@@ -78,8 +80,13 @@ public class PersonServiceTest extends BaseContextSensitiveTest {
 	
 	protected PersonService personService = null;
 	
+	@Autowired
+	private CacheManager cacheManager;
+	
 	@Before
 	public void onSetUpInTransaction() {
+		cacheManager.clearAll();
+		
 		if (ps == null) {
 			ps = Context.getPatientService();
 			adminService = Context.getAdministrationService();

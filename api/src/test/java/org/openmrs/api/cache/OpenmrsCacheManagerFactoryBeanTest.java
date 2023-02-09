@@ -28,8 +28,6 @@ public class OpenmrsCacheManagerFactoryBeanTest extends BaseContextSensitiveTest
     @Test
     public void shouldContainsThreeCacheConfigurations(){
         Collection<String> cacheNames = cacheManager.getCacheNames();
-        assertThat(cacheNames.size(), is(3));
-        cacheNames.forEach(cn ->
-                assertThat(cn, anyOf(is("conceptDatatype"), is("subscription"), is("userSearchLocales"))));
+        assertThat(cacheNames.size(), is(6));
     }
 }

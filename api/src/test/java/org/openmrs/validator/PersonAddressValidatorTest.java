@@ -11,6 +11,7 @@ package org.openmrs.validator;
 
 import java.util.Calendar;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import org.openmrs.PersonAddress;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseContextSensitiveTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -32,6 +34,9 @@ public class PersonAddressValidatorTest extends BaseContextSensitiveTest {
 	PersonAddressValidator validator = null;
 	
 	PersonService ps = null;
+
+	@Autowired
+	private CacheManager cacheManager;
 	
 	/**
 	 * Run this before each unit test in this class.
@@ -40,6 +45,7 @@ public class PersonAddressValidatorTest extends BaseContextSensitiveTest {
 	 */
 	@Before
 	public void runBeforeAllTests() {
+		cacheManager.clearAll();
 		validator = new PersonAddressValidator();
 		ps = Context.getPersonService();
 	}

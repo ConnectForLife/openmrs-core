@@ -9,6 +9,7 @@
  */
 package org.openmrs.api;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -47,6 +48,7 @@ import org.openmrs.test.BaseContextSensitiveTest;
 import org.openmrs.util.DateUtil;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -85,6 +87,8 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 
 	protected static final String ORDER_SET = "org/openmrs/api/include/OrderSetServiceTest-general.xml";
 
+	@Autowired
+	private CacheManager cacheManager;
 
 	/**
 	 * This method is run before all of the tests in this class because it has the @Before
@@ -96,6 +100,7 @@ public class EncounterServiceTest extends BaseContextSensitiveTest {
 	 */
 	@Before
 	public void runBeforeEachTest() {
+		cacheManager.clearAll();
 		executeDataSet(ENC_INITIAL_DATA_XML);
 	}
 

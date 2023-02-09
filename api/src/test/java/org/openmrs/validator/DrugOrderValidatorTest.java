@@ -20,7 +20,9 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.CareSetting;
 import org.openmrs.Concept;
@@ -53,6 +55,14 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Autowired
 	@Qualifier("adminService")
 	AdministrationService adminService;
+	
+	@Autowired
+	private CacheManager cacheManager;
+
+	@Before
+	public void setup() {
+		cacheManager.clearAll();
+	}
 	
 	/**
 	 * @see DrugOrderValidator#validate(Object,Errors)

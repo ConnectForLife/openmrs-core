@@ -113,7 +113,15 @@
         <property name="messageSourceService"><ref bean="messageSourceService"/></property>
         <property name="visitService"><ref bean="visitService"/></property>
         <property name="providerService"><ref bean="providerService"/></property>
-	</bean>	
+	</bean>
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.api.CachedConceptService</value>
+				<ref bean="cachedConceptService"/>
+			</list>
+		</property>
+	</bean>
 	
   <bean id="context" class="org.openmrs.api.context.Context" init-method="setAuthenticationScheme">
     <property name="serviceContext"><ref bean="serviceContext"/></property>
@@ -226,6 +234,21 @@
 	</bean>
 	<bean id="conceptServiceTarget" class="org.openmrs.api.impl.ConceptServiceImpl">
 		<property name="conceptDAO"><ref bean="conceptDAO"/></property>	
+	</bean>
+	<bean id="internalCachedConceptServiceTarget" class="org.openmrs.api.impl.InternalCachedConceptService">
+		<property name="conceptDAO" ref="conceptDAO" />
+	</bean>
+	<bean id="internalCachedConceptService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager"><ref local="transactionManager"/></property>
+		<property name="target"><ref local="internalCachedConceptServiceTarget"/></property>
+		<property name="preInterceptors">
+			<ref local="serviceInterceptors" />
+		</property>
+		<property name="transactionAttributeSource"><ref local="transactionAttributeSource" /></property>
+	</bean>
+	<bean id="cachedConceptServiceTarget" class="org.openmrs.api.impl.CachedConceptServiceImpl">
+		<property name="dbSessionFactory" ref="dbSessionFactory" />
+		<property name="internalCachedConceptService" ref="internalCachedConceptService" />
 	</bean>
 	<bean id="userServiceTarget" class="org.openmrs.api.impl.UserServiceImpl">
 		<property name="userDAO"><ref bean="userDAO"/></property>	
@@ -371,6 +394,14 @@
 	<bean id="conceptService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager"><ref local="transactionManager"/></property>
 		<property name="target"><ref local="conceptServiceTarget"/></property>
+		<property name="preInterceptors">
+			<ref local="serviceInterceptors" />
+		</property>
+		<property name="transactionAttributeSource"><ref local="transactionAttributeSource" /></property>
+	</bean>
+	<bean id="cachedConceptService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager"><ref local="transactionManager"/></property>
+		<property name="target"><ref local="cachedConceptServiceTarget"/></property>
 		<property name="preInterceptors">
 			<ref local="serviceInterceptors" />
 		</property>
