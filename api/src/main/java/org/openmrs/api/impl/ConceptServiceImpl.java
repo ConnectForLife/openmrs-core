@@ -67,6 +67,7 @@ import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.validator.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -107,6 +108,7 @@ public class ConceptServiceImpl extends BaseOpenmrsService implements ConceptSer
 	 * <strong>Should</strong> not set default preferred name to short or index terms
      * <strong>Should</strong> force set flag if set members exist
 	 */
+	@CacheEvict(value = {"conceptById", "conceptByUuid"}, allEntries = true)
 	@Override
 	public Concept saveConcept(Concept concept) throws APIException {
 		ensureConceptMapTypeIsSet(concept);

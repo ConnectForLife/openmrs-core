@@ -22,8 +22,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.openmrs.CareSetting;
 import org.openmrs.Concept;
 import org.openmrs.CustomDosingInstructions;
@@ -55,6 +57,14 @@ public class DrugOrderValidatorTest extends BaseContextSensitiveTest {
 	@Autowired
 	@Qualifier("adminService")
 	AdministrationService adminService;
+	
+	@Autowired
+	private CacheManager cacheManager;
+
+	@BeforeEach
+	public void setup() {
+		cacheManager.clearAll();
+	}
 	
 	/**
 	 * @see DrugOrderValidator#validate(Object,Errors)

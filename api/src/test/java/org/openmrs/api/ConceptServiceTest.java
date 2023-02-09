@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.dbunit.dataset.IDataSet;
 import org.junit.jupiter.api.AfterEach;
@@ -82,6 +83,7 @@ import org.openmrs.util.ConceptMapTypeComparator;
 import org.openmrs.util.DateUtil;
 import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
 /**
@@ -102,7 +104,9 @@ public class ConceptServiceTest extends BaseContextSensitiveTest {
 
 	protected static final String CONCEPT_ATTRIBUTE_TYPE_XML = "org/openmrs/api/include/ConceptServiceTest-conceptAttributeType.xml";
 
-	
+	@Autowired
+	private CacheManager cacheManager;
+
 	/**
 	 * Run this before each unit test in this class. The "@Before" method in
 	 * {@link BaseContextSensitiveTest} is run right before this method.
@@ -111,6 +115,7 @@ public class ConceptServiceTest extends BaseContextSensitiveTest {
 	 */
 	@BeforeEach
 	public void runBeforeAllTests() {
+		cacheManager.clearAll();
 		conceptService = Context.getConceptService();
 	}
 	

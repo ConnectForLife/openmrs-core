@@ -27,6 +27,7 @@ import static org.openmrs.test.TestUtil.assertCollectionContentsEquals;
 import static org.openmrs.util.AddressMatcher.containsAddress;
 import static org.openmrs.util.NameMatcher.containsFullName;
 
+import net.sf.ehcache.CacheManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -81,6 +82,7 @@ import org.openmrs.test.TestUtil;
 import org.openmrs.test.jupiter.BaseContextSensitiveTest;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class tests methods in the PatientService class TODO Add methods to test all methods in
@@ -121,7 +123,9 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 	protected static AdministrationService adminService = null;
 	
 	protected static LocationService locationService = null;
-	
+
+	@Autowired
+	private CacheManager cacheManager;
 	
 	/**
 	 * Run this before each unit test in this class. The "@Before" method in
@@ -131,6 +135,8 @@ public class PatientServiceTest extends BaseContextSensitiveTest {
 	 */
 	@BeforeEach
 	public void runBeforeAllTests() throws Exception {
+		cacheManager.clearAll();
+		
 		patientService = Context.getPatientService();
 		personService = Context.getPersonService();
 		adminService = Context.getAdministrationService();

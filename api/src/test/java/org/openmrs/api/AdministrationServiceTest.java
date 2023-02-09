@@ -45,6 +45,7 @@ import org.openmrs.test.jupiter.BaseContextSensitiveTest;
 import org.openmrs.util.HttpClient;
 import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.SimpleKeyGenerator;
@@ -63,6 +64,9 @@ public class AdministrationServiceTest extends BaseContextSensitiveTest {
 	private HttpClient implementationHttpClient;
 
 	private CacheManager cacheManager;
+
+	@Autowired
+	private  net.sf.ehcache.CacheManager ehCacheManager;
 	
 	@BeforeEach
 	public void runBeforeEachTest() {
@@ -202,6 +206,7 @@ public class AdministrationServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void updateGlobalProperty_shouldUpdateGlobalPropertyInDatabase() {
 		executeDataSet("org/openmrs/api/include/AdministrationServiceTest-globalproperties.xml");
+		ehCacheManager.clearAll();
 		
 		String propertyValue = adminService.getGlobalProperty("a_valid_gp_key");
 		assertEquals("correct-value", propertyValue);
