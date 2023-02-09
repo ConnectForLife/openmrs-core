@@ -9,7 +9,9 @@
  */
 package org.openmrs.validator;
 
+import net.sf.ehcache.CacheManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
@@ -39,6 +41,15 @@ public class UserValidatorTest extends BaseContextSensitiveTest {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CacheManager cacheManager;
+	
+	@BeforeEach
+	public void setupTest() {
+		cacheManager.clearAll();
+	}
+	
 	
 	/**
 	 * @see UserValidator#isUserNameValid(String)

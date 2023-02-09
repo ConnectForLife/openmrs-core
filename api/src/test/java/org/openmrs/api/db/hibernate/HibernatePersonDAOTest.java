@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import net.sf.ehcache.CacheManager;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import org.openmrs.util.GlobalPropertiesTestHelper;
 import org.openmrs.util.OpenmrsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class HibernatePersonDAOTest extends BaseContextSensitiveTest {
 	
@@ -43,8 +45,12 @@ public class HibernatePersonDAOTest extends BaseContextSensitiveTest {
 	
  	private GlobalPropertiesTestHelper globalPropertiesTestHelper;
 
+	@Autowired
+	private CacheManager cacheManager;
+ 	
 	@BeforeEach
 	public void getPersonDAO() {
+		cacheManager.clearAll();
 		executeDataSet(PEOPLE_FROM_THE_SHIRE_XML);
 
 		updateSearchIndex();

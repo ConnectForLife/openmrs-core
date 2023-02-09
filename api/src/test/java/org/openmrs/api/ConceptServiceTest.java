@@ -45,10 +45,12 @@ import java.util.Set;
 import net.sf.ehcache.Ehcache;
 import org.apache.commons.collections.CollectionUtils;
 import org.dbunit.dataset.IDataSet;
+import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptAttributeType;
@@ -109,8 +111,14 @@ public class ConceptServiceTest extends BaseContextSensitiveTest {
 
 	protected static final String CONCEPT_ATTRIBUTE_TYPE_XML = "org/openmrs/api/include/ConceptServiceTest-conceptAttributeType.xml";
 
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
+	
 	@Autowired
 	CacheManager cacheManager;
+	
+	@Autowired
+	net.sf.ehcache.CacheManager ehCacheManager;
 
 	// For testing concept lookups by static constant
 	private static final String TEST_CONCEPT_CONSTANT_ID = "3";
@@ -127,6 +135,7 @@ public class ConceptServiceTest extends BaseContextSensitiveTest {
 	 */
 	@BeforeEach
 	public void runBeforeAllTests() {
+		ehCacheManager.clearAll();
 		conceptService = Context.getConceptService();
 	}
 	

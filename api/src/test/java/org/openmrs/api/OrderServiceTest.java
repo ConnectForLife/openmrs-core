@@ -9,6 +9,7 @@
  */
 package org.openmrs.api;
 
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -145,9 +146,13 @@ public class OrderServiceTest extends BaseContextSensitiveTest {
 
 	@Autowired
 	private MessageSourceService messageSourceService;
+
+	@Autowired
+	private CacheManager cacheManager;
 	
 	@BeforeEach
 	public void setUp(){
+		cacheManager.clearAll();
 		executeDataSet(ORDER_ATTRIBUTES);
 		executeDataSet(ORDER_GROUP_ATTRIBUTES);
 	}

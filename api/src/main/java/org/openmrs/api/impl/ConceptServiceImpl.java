@@ -111,8 +111,8 @@ public class ConceptServiceImpl extends BaseOpenmrsService implements ConceptSer
 	 * <strong>Should</strong> not set default preferred name to short or index terms
      * <strong>Should</strong> force set flag if set members exist
 	 */
+	@CacheEvict(value = {CONCEPT_IDS_BY_MAPPING_CACHE_NAME, "conceptById", "conceptByUuid"}, allEntries = true)
 	@Override
-	@CacheEvict(value = CONCEPT_IDS_BY_MAPPING_CACHE_NAME, allEntries = true)
 	public Concept saveConcept(Concept concept) throws APIException {
 		ensureConceptMapTypeIsSet(concept);
 

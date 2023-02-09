@@ -29,6 +29,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Cache;
 import org.openmrs.ConceptSource;
 import org.openmrs.GlobalProperty;
 import org.openmrs.ImplementationId;
@@ -144,6 +145,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 */
 	@Override
 	@Transactional(readOnly = true)
+	@Cacheable(value = "globalPropertyValueByName")
 	public String getGlobalProperty(String propertyName) throws APIException {
 		// This method should not have any authorization check
 		if (propertyName == null) {
@@ -181,6 +183,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 *      java.lang.String)
 	 */
 	@Override
+	@CacheEvict(value = "globalPropertyValueByName", allEntries = true)
 	public void setGlobalProperty(String propertyName, String propertyValue) throws APIException {
 		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(propertyName);
 		if (gp == null) {
@@ -196,6 +199,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 *      java.lang.String)
 	 */
 	@Override
+	@CacheEvict(value = "globalPropertyValueByName", allEntries = true)
 	public void updateGlobalProperty(String propertyName, String propertyValue) throws IllegalStateException {
 		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(propertyName);
 		if (gp == null) {
@@ -236,6 +240,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 * @see org.openmrs.api.AdministrationService#purgeGlobalProperty(org.openmrs.GlobalProperty)
 	 */
 	@Override
+	@CacheEvict(value = "globalPropertyValueByName", allEntries = true)
 	public void purgeGlobalProperty(GlobalProperty globalProperty) throws APIException {
 		notifyGlobalPropertyDelete(globalProperty.getProperty());
 		dao.deleteGlobalProperty(globalProperty);
@@ -245,7 +250,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 * @see org.openmrs.api.AdministrationService#saveGlobalProperties(java.util.List)
 	 */
 	@Override
-	@CacheEvict(value = "userSearchLocales", allEntries = true)
+	@CacheEvict(value = { "userSearchLocales", "globalPropertyValueByName" }, allEntries = true)
 	public List<GlobalProperty> saveGlobalProperties(List<GlobalProperty> props) throws APIException {
 		log.debug("saving a list of global properties");
 		
@@ -263,7 +268,7 @@ public class AdministrationServiceImpl extends BaseOpenmrsService implements Adm
 	 * @see org.openmrs.api.AdministrationService#saveGlobalProperty(org.openmrs.GlobalProperty)
 	 */
 	@Override
-	@CacheEvict(value = "userSearchLocales", allEntries = true)
+	@CacheEvict(value = { "userSearchLocales", "globalPropertyValueByName" }, allEntries = true)
 	public GlobalProperty saveGlobalProperty(GlobalProperty gp) throws APIException {
 		// only try to save it if the global property has a key
 		if (gp.getProperty() != null && gp.getProperty().length() > 0) {
