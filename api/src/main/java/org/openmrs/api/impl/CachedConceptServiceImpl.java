@@ -38,6 +38,10 @@ public class CachedConceptServiceImpl implements CachedConceptService {
 	}
 
 	private Concept ensureEntityInSession(Concept cachedValue) {
+		if (cachedValue == null) {
+			return null;
+		}
+
 		final Session currentSession = getCurrentSession();
 
 		if (currentSession.contains(cachedValue)) {
