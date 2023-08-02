@@ -41,7 +41,7 @@
 		<connection>scm:git:git@bitbucket.org:soldevelo/openmrs-core.git</connection>
 		<developerConnection>scm:git:git@bitbucket.org:soldevelo/openmrs-core.git</developerConnection>
 		<url>https://bitbucket.org/soldevelo/openmrs-core/</url>
-		<tag>2.4.6-cfl.1</tag>
+		<tag>2.4.6-cfl.2</tag>
 	</scm>
 
 	<ciManagement>

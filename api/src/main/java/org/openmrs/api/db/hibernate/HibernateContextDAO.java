@@ -281,7 +281,12 @@ public class HibernateContextDAO implements ContextDAO {
 	/**
 	 * @see org.openmrs.api.context.Context#openSession()
 	 */
-	private boolean participate = false;
+	private ThreadLocal<Boolean> participate = new ThreadLocal<Boolean>() {
+		@Override
+		protected Boolean initialValue() {
+			return Boolean.FALSE;
+		}
+	};
 	
 	@Override
 	public void openSession() {
@@ -290,7 +295,7 @@ public class HibernateContextDAO implements ContextDAO {
 			if (log.isDebugEnabled()) {
 				log.debug("Participating in existing session (" + sessionFactory.hashCode() + ")");
 			}
-			participate = true;
+			participate.set(Boolean.TRUE);
 		} else {
 			if (log.isDebugEnabled()) {
 				log.debug("Registering session with synchronization manager (" + sessionFactory.hashCode() + ")");
@@ -307,7 +312,7 @@ public class HibernateContextDAO implements ContextDAO {
 	@Override
 	public void closeSession() {
 		log.debug("HibernateContext: closing Hibernate Session");
-		if (!participate) {
+		if (Boolean.FALSE.equals(participate.get())) {
 			log.debug("Unbinding session from synchronization manager (" + sessionFactory.hashCode() + ")");
 			
 			if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
