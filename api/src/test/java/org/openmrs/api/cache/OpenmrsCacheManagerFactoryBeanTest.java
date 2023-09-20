@@ -28,7 +28,8 @@ public class OpenmrsCacheManagerFactoryBeanTest extends BaseContextSensitiveTest
     
     @Test
     public void shouldContainSpecificCacheConfigurations(){
-        String[] expectedCaches = {"conceptDatatype", "subscription", "userSearchLocales", "conceptIdsByMapping"};
+        String[] expectedCaches = {"conceptDatatype", "subscription", "userSearchLocales", "conceptIdsByMapping", 
+            "conceptById", "conceptByUuid", "globalPropertyValueByName"};
         Collection<String> actualCaches = cacheManager.getCacheNames();
         assertThat(actualCaches.size(), is(expectedCaches.length));
         assertThat(actualCaches, containsInAnyOrder(expectedCaches));

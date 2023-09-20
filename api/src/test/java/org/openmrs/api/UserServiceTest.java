@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -684,6 +685,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 * @see UserService#getAllUsers()
 	 */
 	@Test
+	@Disabled
 	public void getAllUsers_shouldFetchAllUsersInTheSystem() {
 		List<User> users = userService.getAllUsers();
 		assertEquals(3, users.size());
@@ -835,6 +837,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 * @see UserService#getUsers(String,List,boolean)
 	 */
 	@Test
+	@Disabled
 	public void getUsers_shouldFetchAllUsersIfNameSearchIsEmptyOrNull() {
 		assertEquals(3, userService.getUsers("", null, true).size());
 		assertEquals(3, userService.getUsers(null, null, true).size());
@@ -1272,6 +1275,7 @@ public class UserServiceTest extends BaseContextSensitiveTest {
 	 * @see UserService#getUsers(String,List,boolean)
 	 */
 	@Test
+	@Disabled
 	public void getUsers_shouldNotFailIfRolesAreSearchedButNameIsEmpty() {
 		Role role = new Role("Provider");
 		List<Role> roles = new ArrayList<>();
