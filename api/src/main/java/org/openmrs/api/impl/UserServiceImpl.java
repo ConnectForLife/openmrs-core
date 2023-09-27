@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * @see org.openmrs.api.context.Context
  */
 @Transactional
-public class UserServiceImpl extends BaseOpenmrsService implements UserService {
+public class UserServiceImpl extends BaseOpenmrsService implements UserService, UserInternalService {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -667,8 +667,9 @@ public class UserServiceImpl extends BaseOpenmrsService implements UserService {
 	 * @param newPassword The password to change it to
 	 */
 	@Authorized(PrivilegeConstants.EDIT_USER_PASSWORDS)
+	@Override
 	public void changePassword(User user, String newPassword) {
-		if (!Daemon.isDaemonThread() || !Context.getUserContext().getAuthenticatedUser().isSuperUser()) {
+		if (!Daemon.isDaemonThread() && !Context.getUserContext().getAuthenticatedUser().isSuperUser()) {
 			throw new APIAuthenticationException(Context.getMessageSourceService().getMessage("error.privilegesRequired",
 				new Object[] { "System Developer" }, Context.getLocale()));
 		}

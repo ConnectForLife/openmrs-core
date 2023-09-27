@@ -44,11 +44,11 @@ import org.apache.commons.io.IOUtils;
 import org.openmrs.ImplementationId;
 import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.PasswordException;
+import org.openmrs.api.UserInternalService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.ContextAuthenticationException;
 import org.openmrs.api.context.UsernamePasswordCredentials;
-import org.openmrs.api.impl.UserServiceImpl;
 import org.openmrs.liquibase.ChangeLogDetective;
 import org.openmrs.liquibase.ChangeLogVersionFinder;
 import org.openmrs.module.MandatoryModuleException;
@@ -1795,7 +1795,7 @@ public class InitializationFilter extends StartupFilter {
 									props.setProperty(UserService.ADMIN_PASSWORD_LOCKED_PROPERTY, "false");
 									Context.setRuntimeProperties(props);
 									
-									((UserServiceImpl) Context.getUserService()).changePassword(
+									((UserInternalService) Context.getUserService()).changePassword(
 										Context.getAuthenticatedUser(), wizardModel.adminUserPassword);
 									
 									if (initValue == null) {
