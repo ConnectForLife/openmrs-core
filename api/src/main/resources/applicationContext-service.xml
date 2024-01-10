@@ -248,12 +248,10 @@
 		<property name="conceptDAO" ref="conceptDAO" />
 	</bean>
 	<bean id="internalCachedConceptService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager"><ref local="transactionManager"/></property>
-		<property name="target"><ref local="internalCachedConceptServiceTarget"/></property>
-		<property name="preInterceptors">
-			<ref local="serviceInterceptors" />
-		</property>
-		<property name="transactionAttributeSource"><ref local="transactionAttributeSource" /></property>
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target" ref="internalCachedConceptServiceTarget" />
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
 	</bean>
 	<bean id="cachedConceptServiceTarget" class="org.openmrs.api.impl.CachedConceptServiceImpl">
 		<property name="dbSessionFactory" ref="dbSessionFactory" />
